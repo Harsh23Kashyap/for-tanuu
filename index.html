@@ -165,6 +165,48 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
 .win-burst.show{animation:burstIn 1.6s cubic-bezier(.22,1,.36,1) forwards}
 .win-burst span{font-family:'Playfair Display',serif;font-style:italic;font-size:2rem;color:var(--gold);text-shadow:0 4px 30px rgba(255,209,102,.5)}
 @keyframes burstIn{0%{opacity:0;transform:scale(.6)}25%{opacity:1;transform:scale(1.05)}70%{opacity:1}100%{opacity:0;transform:scale(1.1)}}
+/* ---- pretty pass ---- */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(500px 340px at 15% 18%, rgba(255,122,162,.12), transparent 65%),
+    radial-gradient(600px 420px at 85% 70%, rgba(255,209,102,.08), transparent 65%),
+    radial-gradient(420px 420px at 60% 100%, rgba(150,110,255,.10), transparent 65%);
+  animation:aurora 16s ease-in-out infinite alternate}
+@keyframes aurora{from{opacity:.6;transform:translateY(0)}to{opacity:1;transform:translateY(-14px)}}
+.kicker{position:relative;display:inline-flex;align-items:center;gap:12px}
+.kicker::before,.kicker::after{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,var(--rose-soft));opacity:.6}
+.kicker::after{background:linear-gradient(90deg,var(--rose-soft),transparent)}
+.bigtitle em{background:linear-gradient(100deg,var(--rose),var(--gold),var(--rose));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;animation:shimmerText 5s linear infinite}
+@keyframes shimmerText{to{background-position:220% 0}}
+.bigtitle{text-shadow:0 6px 40px rgba(255,122,162,.18)}
+.btn{position:relative;overflow:hidden;animation:btnGlow 3s ease-in-out infinite}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);transform:translateX(-130%);transition:transform .8s ease}
+.btn:active::after{transform:translateX(130%)}
+@keyframes btnGlow{0%,100%{box-shadow:0 8px 30px rgba(255,122,162,.35), inset 0 1px 0 rgba(255,255,255,.5)}50%{box-shadow:0 8px 42px rgba(255,160,190,.55), inset 0 1px 0 rgba(255,255,255,.5)}}
+.btn.ghost{animation:none}
+.level-card,.intro-card,.quiz-card,.finale-photo{border:1px solid transparent;
+  background:linear-gradient(var(--glass),var(--glass)) padding-box, linear-gradient(140deg,rgba(255,122,162,.45),rgba(255,209,102,.18) 45%,rgba(255,122,162,.08)) border-box;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.level-card{animation:cardIn .5s cubic-bezier(.22,1,.36,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.progress-hearts svg.done{filter:drop-shadow(0 0 8px rgba(255,122,162,.8))}
+.screen.active{animation:screenIn .6s cubic-bezier(.22,1,.36,1)}
+@keyframes screenIn{from{opacity:0;transform:translateY(20px) scale(.985)}to{opacity:1;transform:none}}
+.finale-photo{animation:photoFloat 5s ease-in-out infinite, photoGlow 4s ease-in-out infinite}
+@keyframes photoFloat{0%,100%{transform:rotate(-2deg) translateY(0)}50%{transform:rotate(-2deg) translateY(-8px)}}
+@keyframes photoGlow{0%,100%{box-shadow:0 24px 60px rgba(0,0,0,.4),0 0 0 rgba(255,122,162,0)}50%{box-shadow:0 24px 60px rgba(0,0,0,.4),0 0 44px rgba(255,122,162,.35)}}
+.letter{position:relative}
+.shooting-star{position:fixed;top:8%;left:-10%;width:2px;height:2px;background:#fff;border-radius:50%;z-index:1;pointer-events:none;
+  box-shadow:0 0 6px 2px rgba(255,255,255,.6);animation:shoot 9s linear infinite}
+.shooting-star::after{content:"";position:absolute;top:0;right:0;width:90px;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.7),transparent)}
+@keyframes shoot{0%,86%{transform:translate(0,0);opacity:0}88%{opacity:1}100%{transform:translate(120vw,38vh);opacity:0}}
+.mcard .mface{transition:box-shadow .3s}
+.mcard.matched .mback{box-shadow:0 0 22px rgba(255,209,102,.35);border-color:var(--gold)}
+.pill{animation:pillIn .5s cubic-bezier(.34,1.56,.64,1) both}
+.pill:nth-child(1){animation-delay:.05s}.pill:nth-child(2){animation-delay:.12s}.pill:nth-child(3){animation-delay:.19s}.pill:nth-child(4){animation-delay:.26s}.pill:nth-child(5){animation-delay:.33s}
+@keyframes pillIn{from{opacity:0;transform:translateY(10px) scale(.9)}to{opacity:1;transform:none}}
+.star .dot{transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s}
+/* ---- /pretty pass ---- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
 }
@@ -172,6 +214,7 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
 </head>
 <body>
 <div class="float-hearts" id="floatHearts"></div>
+<div class="shooting-star"></div>
 <div class="win-burst" id="winBurst"><span id="winBurstText"></span></div>
 <div class="toast" id="toast"></div>
 
@@ -332,6 +375,7 @@ function renderMap(){
     const done = state.done.includes(lv.id);
     const el=document.createElement("div");
     el.className="level-card"+(unlocked?"":" locked");
+    el.style.animationDelay=(i*0.08)+"s";
     el.innerHTML=`<div class="level-num">${i+1}</div><div><div class="level-name">${lv.name}</div><div class="level-desc">${lv.desc}</div></div><div class="level-state">${done?"💛":unlocked?lv.icon:"🔒"}</div>`;
     el.onclick=()=>openIntro(lv);
     list.appendChild(el);
