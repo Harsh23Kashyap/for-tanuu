@@ -368,11 +368,13 @@ function startCatch(){
     area.appendChild(el);
     falls.push({el,x,y:-40,vy:2+Math.random()*2.2,cracked});
   },560);
-  const tick=()=>{
+  let lastT=performance.now();
+  const tick=(now)=>{
     if(!running) return;
+    const dt=Math.min(0.1,((now||performance.now())-lastT)/1000); lastT=now||performance.now();
     const bw=86, basketY=area.clientHeight-62;
     for(let i=falls.length-1;i>=0;i--){
-      const f=falls[i]; f.y+=f.vy;
+      const f=falls[i]; f.y+=f.vy*60*dt;
       f.el.style.transform=`translateY(${f.y}px) rotate(${f.y/6}deg)`;
       if(f.y>basketY-10 && f.y<basketY+34 && Math.abs(f.x+15-bx)<bw/2+12){
         if(f.cracked){ score=Math.max(0,score-1); toast("ouch 💔"); }
