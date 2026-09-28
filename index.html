@@ -408,8 +408,8 @@ function startCatch(){
 function startMemory(){
   go("s-memory");
   const grid=$("memory-grid"); grid.innerHTML="";
-  $("memPairs").textContent="0"; $("memMoves").textContent="0"; $("memTotal").textContent=icons.length;
   const icons=CONFIG.memoryIcons;
+  $("memPairs").textContent="0"; $("memMoves").textContent="0"; $("memTotal").textContent=icons.length;
   const deck=[...icons,...icons].sort(()=>Math.random()-.5);
   let open=[], lock=false, pairs=0, moves=0;
   deck.forEach(ic=>{
