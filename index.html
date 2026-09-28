@@ -191,7 +191,7 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
   <a class="backlink" href="#" onclick="quitCatch();go('s-map');return false">← arcade</a>
   <div class="hud"><span>caught <b id="catchScore">0</b> / <span id="catchTarget">10</span></span><span><b id="catchTime">45</b>s</span></div>
   <div class="game-wrap"><div id="catch-area"><div id="basket"></div></div></div>
-  <p class="sub" style="margin-top:14px;font-size:.85rem">drag to move · catch the hearts · skip the cracked ones</p>
+  <p class="sub" style="margin-top:14px;font-size:.85rem">drag to move · catch the good stuff · dodge the rest</p>
 </section>
 
 <!-- GAME 2: MEMORY -->
@@ -246,7 +246,8 @@ const CONFIG = {
   ],
   letter: "Hi Tanuu,\n\nHappy anniversary.\n\nYou just played through four tiny games. That is roughly how much space you take up in my head at any given moment. All of it.\n\nI know I am not a call person. I know I say kal a lot. But this year with you has been my favourite bug in an otherwise well-tested life.\n\nThe distance is annoying. You are worth it.\n\nTomorrow is ours. So is the day after. So is every one after that.\n\nLove,\nHarsh",
   photoURL: null,
-  memoryIcons: ["🌹","☎️","🌙","☕"]
+  memoryIcons: ["🍛","🫓","🌹","☎️"],
+  catchItems: { good: ["🍛","🫓","🌹","☕"], bad: ["💔","🥦"] }
 };
 /* ================================================= */
 
@@ -308,7 +309,7 @@ function openIntro(lv){
   $("introKicker").textContent="level "+(i+1);
   $("introTitle").textContent=lv.name;
   const bodies={
-    catch:"Ten little hearts are about to fall your way. Catch them. The cracked ones were never yours anyway.",
+    catch:"Biryani, parathas, roses and chai are falling out of the sky, as they should. Catch the good stuff. Dodge the broccoli and the cracked hearts.",
     memory:"Eight cards, four pairs, all of them little pieces of us. Flip, remember, match.",
     quiz:"Four questions about a story you already know by heart. No pressure. You literally cannot fail this.",
     stars:"Somewhere in this sky there is a shape waiting. Tap the glowing stars in order and draw it."
@@ -359,8 +360,9 @@ function startCatch(){
   area.onpointerdown=e=>move(e.clientX);
   catchSpawn=setInterval(()=>{
     if(!running) return;
-    const cracked=Math.random()<0.25;
-    const el=document.createElement("div"); el.className="fall"; el.textContent=cracked?"💔":"💛";
+    const cracked=Math.random()<0.22;
+    const el=document.createElement("div"); el.className="fall";
+    el.textContent=cracked?CONFIG.catchItems.bad[Math.floor(Math.random()*CONFIG.catchItems.bad.length)]:CONFIG.catchItems.good[Math.floor(Math.random()*CONFIG.catchItems.good.length)];
     const x=Math.random()*(area.clientWidth-40);
     el.style.left=x+"px";
     area.appendChild(el);
