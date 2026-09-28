@@ -100,7 +100,7 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
 #basket{position:absolute;bottom:10px;left:50%;width:86px;height:52px;transform:translateX(-50%);will-change:transform;z-index:3}
 .fall{position:absolute;top:-44px;font-size:30px;will-change:transform;line-height:1}
 /* memory */
-#memory-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;max-width:340px}
+#memory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:340px}
 .mcard{aspect-ratio:1;perspective:700px;cursor:pointer}
 .mcard-inner{position:relative;width:100%;height:100%;transition:transform .45s cubic-bezier(.34,1.3,.64,1);transform-style:preserve-3d}
 .mcard.flip .mcard-inner{transform:rotateY(180deg)}
@@ -191,13 +191,13 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
   <a class="backlink" href="#" onclick="quitCatch();go('s-map');return false">← arcade</a>
   <div class="hud"><span>caught <b id="catchScore">0</b> / <span id="catchTarget">10</span></span><span><b id="catchTime">45</b>s</span></div>
   <div class="game-wrap"><div id="catch-area"><div id="basket"></div></div></div>
-  <p class="sub" style="margin-top:14px;font-size:.85rem">drag to move · catch the good stuff · dodge the rest</p>
+  <p class="sub" style="margin-top:14px;font-size:.85rem">drag to move · catch what you love · dodge the dogs</p>
 </section>
 
 <!-- GAME 2: MEMORY -->
 <section class="screen" id="s-memory">
   <a class="backlink" href="#" onclick="go('s-map');return false">← arcade</a>
-  <div class="hud"><span>pairs <b id="memPairs">0</b> / 4</span><span>moves <b id="memMoves">0</b></span></div>
+  <div class="hud"><span>pairs <b id="memPairs">0</b> / <span id="memTotal">6</span></span><span>moves <b id="memMoves">0</b></span></div>
   <div id="memory-grid"></div>
 </section>
 
@@ -233,29 +233,31 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
 const CONFIG = {
   herName: "Tanuu",
   introMemory: {
-    catch: "all the little moments that fall into our days. the 2am texts, the reels, the random hi. I catch every single one.",
-    memory: "some things keep coming back in our chats. roses, late nights, the moon, and the phone that never leaves my hand.",
-    quiz: "you know this story better than anyone. you were there for all of it.",
-    stars: "hyderabad to bangalore is some 570 kilometres. luckily it is the same sky over both."
+    catch: "biryani, ice cream, protein bars and heels are falling out of the sky. catch what you love. dodge the dogs. you know why.",
+    memory: "some things just belong together. you and NYC sunsets. you and biryani. you and him.",
+    quiz: "six questions about the girl who laughs the loudest in hyderabad. you cannot fail this. you are her.",
+    stars: "hyderabad to new york is one long flight. luckily every dream you have leaves from under the same sky."
   },
   quiz: [
-    { q: "Where do you live when you are not busy stealing all my time?", opts: ["Hyderabad", "Bangalore", "Delhi"], right: 0, note: "one day the answer is with you." },
-    { q: "What is your chat pinned as on my phone?", opts: ["tanuu_01", "unat", "your government name"], right: 1, note: "pinned. always pinned." },
-    { q: "It is 2am and I say I am not a call person. What happens next?", opts: ["we both sleep", "we text for three more hours", "you hang up first"], right: 1, note: "every single time." },
-    { q: "And what day is tomorrow?", opts: ["just a tuesday", "gym day", "our anniversary"], right: 2, note: "september 29. I remembered first." }
+    { q: "Your one true love (do not pretend it is him):", opts: ["biryani", "protein bars", "him, fine"], right: 0, note: "he knows. he has made peace with it." },
+    { q: "It is 7pm. where are you?", opts: ["asleep", "the gym, lifting", "cooking"], right: 1, note: "weights before everything." },
+    { q: "A dog appears on your street. you:", opts: ["pet it", "take a photo", "sprint the other way"], right: 2, note: "every street dog is a final boss." },
+    { q: "Your most prized possession:", opts: ["your passport", "your iPhone", "your makeup kit"], right: 0, note: "stamps over storage. the iPhone understands." },
+    { q: "Your camera roll is 90%:", opts: ["outfit checks in heels", "NYC buildings and sunsets", "reel drafts"], right: 1, note: "manifesting that skyline." },
+    { q: "And where do you work right now?", opts: ["Vogue", "NASA", "Amazon, Hyderabad"], right: 2, note: "research queen. for now - New York, she is coming." }
   ],
-  letter: "Hi Tanuu,\n\nHappy anniversary.\n\nYou just played through four tiny games. That is roughly how much space you take up in my head at any given moment. All of it.\n\nI know I am not a call person. I know I say kal a lot. But this year with you has been my favourite bug in an otherwise well-tested life.\n\nThe distance is annoying. You are worth it.\n\nTomorrow is ours. So is the day after. So is every one after that.\n\nLove,\nHarsh",
+  letter: "Hi Tanuu,\n\nHappy anniversary.\n\nYou just caught your biryani, matched your heels, dodged a few dogs, and lit up our sky. That is roughly what loving you feels like.\n\nTo the girl who laughs the loudest, lifts the heaviest, and dreams in New York skylines: this year with you has been my favourite bug in an otherwise well-tested life.\n\nHyderabad to Bangalore is annoying. You are worth it. One day the answer to where do you live is just with you.\n\nTomorrow is ours. So is the day after. So is every one after that.\n\nLove,\nHarsh",
   photoURL: null,
-  memoryIcons: ["🍛","🫓","🌹","☎️"],
-  catchItems: { good: ["🍛","🫓","🌹","☕"], bad: ["💔","🥦"] }
+  memoryIcons: ["🍛","👠","💄","🗽","🏋️‍♀️","✈️"],
+  catchItems: { good: ["🍛","🍦","🍫","👠","✈️","🗽"], bad: ["🐕","💔"] }
 };
 /* ================================================= */
 
 const $ = id => document.getElementById(id);
 const LEVELS = [
-  { id:"catch",  name:"Catch the Little Moments", desc:"catch what falls for you", icon:"🫶" },
-  { id:"memory", name:"Match the Memories",       desc:"every pair belongs together", icon:"🃏" },
-  { id:"quiz",   name:"The Little Quiz",          desc:"how well do you know us", icon:"💭" },
+  { id:"catch",  name:"Catch the Cravings",       desc:"biryani, heels and everything you love", icon:"🍛" },
+  { id:"memory", name:"Match the Memories",       desc:"pairs that belong together, like you two", icon:"🗽" },
+  { id:"quiz",   name:"The Tanuu Trivia",         desc:"how well do you know yourself", icon:"💭" },
   { id:"stars",  name:"Light the Constellation",  desc:"connect the stars, find the shape", icon:"✨" }
 ];
 let state = { done: JSON.parse(localStorage.getItem("tanuu_arcade") || "[]") };
@@ -309,10 +311,10 @@ function openIntro(lv){
   $("introKicker").textContent="level "+(i+1);
   $("introTitle").textContent=lv.name;
   const bodies={
-    catch:"Biryani, parathas, roses and chai are falling out of the sky, as they should. Catch the good stuff. Dodge the broccoli and the cracked hearts.",
-    memory:"Eight cards, four pairs, all of them little pieces of us. Flip, remember, match.",
-    quiz:"Four questions about a story you already know by heart. No pressure. You literally cannot fail this.",
-    stars:"Somewhere in this sky there is a shape waiting. Tap the glowing stars in order and draw it."
+    catch:"Biryani, ice cream, protein bars, heels and plane tickets are falling out of the sky. Catch everything you love. Dodge the dogs. You know exactly why.",
+    memory:"Twelve cards, six pairs, all of them extremely you. Flip, remember, match.",
+    quiz:"Six questions about a certain girl. No pressure. You are literally her.",
+    stars:"Somewhere between Hyderabad and New York there is a shape waiting in this sky. Tap the glowing stars in order and draw it."
   };
   $("introBody").textContent=bodies[lv.id];
   $("introMemory").textContent=CONFIG.introMemory[lv.id];
@@ -381,7 +383,7 @@ function startCatch(){
         else { score++; }
         $("catchScore").textContent=score;
         f.el.remove(); falls.splice(i,1);
-        if(score>=10){ running=false; cleanup(); winLevel("catch","you caught them all"); return; }
+        if(score>=10){ running=false; cleanup(); winLevel("catch","zero dogs caught. flawless."); return; }
         continue;
       }
       if(f.y>area.clientHeight+50){ f.el.remove(); falls.splice(i,1); }
@@ -394,7 +396,7 @@ function startCatch(){
     time--; $("catchTime").textContent=time;
     if(time<=0){
       running=false; cleanup();
-      if(score>=10) winLevel("catch","you caught them all");
+      if(score>=10) winLevel("catch","zero dogs caught. flawless.");
       else { toast("so close — once more?"); setTimeout(()=>startCatch(),900); }
     }
   },1000);
@@ -406,7 +408,7 @@ function startCatch(){
 function startMemory(){
   go("s-memory");
   const grid=$("memory-grid"); grid.innerHTML="";
-  $("memPairs").textContent="0"; $("memMoves").textContent="0";
+  $("memPairs").textContent="0"; $("memMoves").textContent="0"; $("memTotal").textContent=icons.length;
   const icons=CONFIG.memoryIcons;
   const deck=[...icons,...icons].sort(()=>Math.random()-.5);
   let open=[], lock=false, pairs=0, moves=0;
@@ -421,7 +423,7 @@ function startMemory(){
         if(open[0].ic===open[1].ic){
           setTimeout(()=>{ open.forEach(o=>o.c.classList.add("matched")); open=[]; lock=false;
             pairs++; $("memPairs").textContent=pairs;
-            if(pairs===4) winLevel("memory","a perfect match");
+            if(pairs===icons.length) winLevel("memory","a perfect match. obviously.");
           },420);
         } else {
           setTimeout(()=>{ open.forEach(o=>o.c.classList.remove("flip")); open=[]; lock=false; },800);
@@ -448,7 +450,7 @@ function startQuiz(){
           b.classList.add("right");
           $("quizNote").textContent=q.note||"obviously.";
           confettiBurst(8);
-          setTimeout(()=>{ i++; i<CONFIG.quiz.length?ask():winLevel("quiz","you know us by heart"); },1100);
+          setTimeout(()=>{ i++; i<CONFIG.quiz.length?ask():winLevel("quiz","certified: you are her."); },1100);
         } else {
           b.classList.add("wrong");
           $("quizNote").textContent="nice try 😌 pick again";
