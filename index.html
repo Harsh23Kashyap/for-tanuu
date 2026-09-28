@@ -129,6 +129,21 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
 .star.lit .dot{background:var(--gold);transform:scale(1.5);box-shadow:0 0 18px 6px rgba(255,209,102,.9)}
 .star.next .dot{animation:pulseStar 1.1s ease-in-out infinite}
 @keyframes pulseStar{50%{transform:scale(1.7)}}
+
+/* pills + fine print + accents */
+.pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px;max-width:320px}
+.pill{font-size:.72rem;font-weight:600;letter-spacing:.06em;padding:6px 14px;border-radius:100px;border:1.5px solid;background:rgba(255,255,255,.04);transition:transform .2s}
+.pill:active{transform:scale(1.08)}
+.fineprint{margin-top:34px;font-size:.68rem;color:var(--ink-dim);letter-spacing:.04em;max-width:34ch;line-height:1.7;font-weight:300}
+.fineprint b{color:var(--rose-soft);font-weight:500}
+.level-card{position:relative;overflow:hidden}
+.level-card::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s ease}
+.level-card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.35)}
+.level-card:hover::after{transform:translateX(120%)}
+.fact{margin-top:14px;font-size:.8rem;color:var(--gold);opacity:.85;font-style:italic}
+.quiz-q{animation:qIn .4s ease}
+@keyframes qIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ps{font-family:'Playfair Display',serif;font-style:italic;color:var(--rose-soft);margin-top:18px;font-size:.95rem}
 /* finale */
 .landing-pic{width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 18px;border:2px solid var(--glass-line);box-shadow:0 12px 40px rgba(0,0,0,.4);display:none}
 .landing-pic img{width:100%;height:100%;object-fit:cover;display:block}
@@ -166,7 +181,15 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
   <div class="kicker">29 september</div>
   <h1 class="bigtitle">a tiny arcade,<br><em>made for you</em></h1>
   <p class="sub">Four little games. One big reason. Play through them all and see what is waiting at the end.</p>
+  <div class="pills">
+    <span class="pill" style="border-color:var(--rose);color:var(--rose-soft)">biryani connoisseur</span>
+    <span class="pill" style="border-color:var(--gold);color:var(--gold)">nyc dreamer</span>
+    <span class="pill" style="border-color:#8fd3ff;color:#8fd3ff">gym regular</span>
+    <span class="pill" style="border-color:#b79aff;color:#b79aff">professional dog avoider</span>
+    <span class="pill" style="border-color:#7ee8c7;color:#7ee8c7">passport collector</span>
+  </div>
   <button class="btn" onclick="go('s-map')">Begin</button>
+  <div class="fineprint">handmade for the girl who laughs the loudest<br><b>est. 29 september</b></div>
 </section>
 
 <!-- LEVEL MAP -->
@@ -175,6 +198,7 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
   <h2 class="bigtitle" style="font-size:2rem;margin:14px 0 4px">pick a game</h2>
   <div class="progress-hearts" id="progressHearts"></div>
   <div id="levelList" style="width:100%;display:flex;flex-direction:column;align-items:center"></div>
+  <div class="fineprint">fine print: no dogs were harmed in this arcade.<br>the biryani was. repeatedly.</div>
 </section>
 
 <!-- INTRO -->
@@ -185,6 +209,7 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
     <h2 id="introTitle"></h2>
     <p id="introBody"></p>
     <div class="memory" id="introMemory"></div>
+    <div class="fact" id="introFact"></div>
     <button class="btn" id="introBtn">Play</button>
   </div>
 </section>
@@ -192,7 +217,7 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
 <!-- GAME 1: CATCH -->
 <section class="screen" id="s-catch">
   <a class="backlink" href="#" onclick="quitCatch();go('s-map');return false">← arcade</a>
-  <div class="hud"><span>caught <b id="catchScore">0</b> / <span id="catchTarget">10</span></span><span><b id="catchTime">45</b>s</span></div>
+  <div class="hud"><span>caught <b id="catchScore">0</b> / <span id="catchTarget">10</span> · dogs dodged <b id="dogsDodged">0</b></span><span><b id="catchTime">45</b>s</span></div>
   <div class="game-wrap"><div id="catch-area"><div id="basket"></div></div></div>
   <p class="sub" style="margin-top:14px;font-size:.85rem">drag to move · catch what you love · dodge the dogs</p>
 </section>
@@ -220,6 +245,7 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
   <a class="backlink" href="#" onclick="go('s-map');return false">← arcade</a>
   <div class="hud"><span>stars <b id="starCount">0</b> / 8</span><span>tap them in order</span></div>
   <div class="game-wrap"><div id="sky"><svg id="skySvg" preserveAspectRatio="none"></svg></div></div>
+  <p class="sub" style="margin-top:14px;font-size:.85rem">hyderabad ✈ new york · same sky, same us</p>
 </section>
 
 <!-- FINALE -->
@@ -228,7 +254,9 @@ h1,h2,.serif{font-family:'Playfair Display',Georgia,serif}
   <h1 class="bigtitle" style="font-size:2.4rem">you reached me.</h1>
   <div class="finale-photo" id="finalePhoto"></div>
   <div class="letter"><span id="letterText"></span><span class="cursor"></span></div>
+  <div class="ps">p.s. the dogs were his idea.</div>
   <button class="btn ghost" onclick="resetAll()">play it all again</button>
+  <div class="fineprint">made by harsh · for tanuu · 29 september<br>results certified by the bureau of knowing her</div>
 </section>
 
 <script>
@@ -325,6 +353,13 @@ function openIntro(lv){
   };
   $("introBody").textContent=bodies[lv.id];
   $("introMemory").textContent=CONFIG.introMemory[lv.id];
+  const facts={
+    catch:"fun fact: she can finish a biryani faster than he can say leg day.",
+    memory:"fun fact: she owns more heels than he owns t-shirts.",
+    quiz:"fun fact: she laughs at her own reels before anyone else sees them.",
+    stars:"fun fact: her passport has seen more countries than his has seen pages."
+  };
+  $("introFact").textContent=facts[lv.id];
   $("introBtn").onclick=()=>{ startGame(lv.id); };
   go("s-intro");
 }
@@ -361,7 +396,7 @@ function startCatch(){
   go("s-catch");
   const area=$("catch-area"), basket=$("basket");
   basket.innerHTML=`<svg viewBox="0 0 86 52" width="86" height="52"><path d="M6 14 h74 l-8 30 a10 10 0 0 1 -10 8 H24 a10 10 0 0 1 -10 -8 z" fill="url(#bg1)" stroke="#ffd166" stroke-width="2"/><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7aa2"/><stop offset="1" stop-color="#ffb3c8"/></linearGradient></defs></svg>`;
-  let score=0, time=45, bx=area.clientWidth/2, running=true;
+  let score=0, time=45, dogs=0, bx=area.clientWidth/2, running=true;
   $("catchScore").textContent="0"; $("catchTime").textContent=time; $("catchTarget").textContent="10";
   const falls=[];
   const move=x=>{ const r=area.getBoundingClientRect(); bx=Math.max(43,Math.min(r.width-43,x-r.left)); basket.style.transform=`translateX(${bx-43}px)`; basket.style.left="0"; };
@@ -393,7 +428,7 @@ function startCatch(){
         if(score>=10){ running=false; cleanup(); winLevel("catch","zero dogs caught. flawless."); return; }
         continue;
       }
-      if(f.y>area.clientHeight+50){ f.el.remove(); falls.splice(i,1); }
+      if(f.y>area.clientHeight+50){ if(f.cracked){ dogs++; $("dogsDodged").textContent=dogs; } f.el.remove(); falls.splice(i,1); }
     }
     catchRAF=requestAnimationFrame(tick);
   };
@@ -428,8 +463,10 @@ function startMemory(){
       if(open.length===2){
         moves++; $("memMoves").textContent=moves; lock=true;
         if(open[0].ic===open[1].ic){
-          setTimeout(()=>{ open.forEach(o=>o.c.classList.add("matched")); open=[]; lock=false;
+          setTimeout(()=>{ const ic0=open[0].ic; open.forEach(o=>o.c.classList.add("matched")); open=[]; lock=false;
             pairs++; $("memPairs").textContent=pairs;
+            const caps={"🍛":"biryani. obviously.","👠":"heels. she has taste.","💄":"the makeup kit, matched.","🗽":"new york. eventually.","🏋️‍♀️":"she outlifts him.","✈️":"boarding soon."};
+            toast(caps[ic0]||"matched.");
             if(pairs===icons.length) winLevel("memory","a perfect match. obviously.");
           },420);
         } else {
@@ -449,6 +486,7 @@ function startQuiz(){
     const q=CONFIG.quiz[i];
     $("quizCount").textContent=`question ${i+1} of ${CONFIG.quiz.length}`;
     $("quizQ").textContent=q.q; $("quizNote").textContent="";
+    const qq=$("quizQ"); qq.style.animation="none"; void qq.offsetWidth; qq.style.animation="";
     const box=$("quizOpts"); box.innerHTML="";
     q.opts.forEach((o,oi)=>{
       const b=document.createElement("button"); b.className="quiz-opt"; b.textContent=o;
@@ -524,6 +562,11 @@ function startFinale(){
   setTimeout(()=>confettiBurst(24),1400);
 }
 function resetAll(){ state.done=[]; save(); go("s-landing"); }
+let eggTaps=0, eggTimer=null;
+document.querySelector("#s-landing .bigtitle").addEventListener("pointerdown",()=>{
+  eggTaps++; clearTimeout(eggTimer); eggTimer=setTimeout(()=>eggTaps=0,900);
+  if(eggTaps>=3){ eggTaps=0; confettiBurst(36); toast("you found the secret. he loves you. pass it on."); }
+});
 go("s-landing");
 </script>
 </body>
